@@ -1,11 +1,19 @@
 # ESOFT Next-Gen ELMS Portal
 
+<img width="1917" height="916" alt="Screenshot 2026-07-16 093328" src="https://github.com/user-attachments/assets/240279e1-e15b-425e-b7d5-b99ac6967dc2" />
+
 ## Overview
 A modernized, student-centric E-Learning Management System (ELMS) interface designed to elevate the academic experience at ESOFT Metro Campus. This project replaces the legacy interface with a clean, high-engagement, light-themed UI utilizing glassmorphism design principles, fluid animations, and logical information architecture.
 
 ## Key Features
 
 ### 🔐 Authentication & Security
+
+<img width="1917" height="914" alt="Screenshot 2026-07-16 093341" src="https://github.com/user-attachments/assets/73900cfd-e2f1-44f0-84c0-1fcfddc545f4" />
+
+<img width="1917" height="916" alt="Screenshot 2026-07-16 093354" src="https://github.com/user-attachments/assets/7952d872-4b2a-4462-9b73-ee8345f60637" />
+
+
 *   **Dual-Step Entry:** Seamless flow from a branded splash screen to portal credentials and Microsoft academic account verification.
 *   **Secure Access:** Clean, professional login portals that prioritize student data security.
 
