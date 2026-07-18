@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESOFT E-Learning | Next Gen Pro</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        esoft: {
+                            blue: '#003399',
+                            light: '#e6ebf5',
+                            red: '#e31837',
+                            gold: '#FFD700',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'inner-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.03)',
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f4f7fb;
+            background-image: radial-gradient(at 0% 0%, hsla(217,100%,95%,1) 0, transparent 50%), 
+                              radial-gradient(at 100% 0%, hsla(348,100%,97%,1) 0, transparent 50%);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .animate-pop { animation: pop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        .stagger-1 { animation-delay: 100ms; }
+        .stagger-2 { animation-delay: 200ms; }
+        .stagger-3 { animation-delay: 300ms; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes pop {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        body {
+            background-color: #f4f7fb;
+            background: linear-gradient(135deg, rgba(0, 51, 153, 0.05) 0%, rgba(227, 24, 55, 0.03) 100%);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen overflow-x-hidden">
+
+    <!-- App Container -->
+    <div id="app" class="w-full min-h-screen relative"></div>
+
+    <script>
+        const coursesData = {
+            level3: {
+                id: 'level3',
+                title: "Level 3 Diploma in Information Technology",
+                duration: "Nov 2023 - Nov 2024",
+                progress: 85,
+                semesters: [
+                    { 
+                        name: "STAGE 1", 
+                        status: "Completed",
+                        progress: 100,
+                        modules: [
+                            { name: "Enhancing Productivity with MS Office" }, 
+                            { name: "Information Technology Concepts" }
+                        ]
+                    },
+                    { 
+                        name: "STAGE 2", 
+                        status: "Completed",
+                        progress: 100,
+                        modules: [
+                            { name: "Internet, Email and Web Designing" }, 
+                            { name: "Computer Hardware" },
+                            { name: "Graphics and Multimedia" },
+                            { name: "Network Technology" }
+                        ]
+                    },
+                    { 
+                        name: "STAGE 3", 
+                        status: "Ongoing",
+                        progress: 60,
+                        modules: [
+                            { name: "Introduction to Software Engineering" }, 
+                            { name: "Programming with Python" },
+                            { name: "Database with SQL" },
+                            { name: "Programming with C#.net" },
+                            { name: "Final Project" }
+                        ]
+                    }
+                ]
+            },
+            hnd: {
+                id: 'hnd',
+                title: "Pearson BTEC Level 5 HND in Computing (RQF)",
+                duration: "Oct 2024 - Mar 2026",
+                progress: 15,
+                semesters: [
+                    { 
+                        name: "SEMESTER 1", 
+                        status: "Ongoing",
+                        progress: 45,
+                        modules: [
+                            { name: "Networking" }, 
+                            { name: "Database Design and Development Part 1" }, 
+                            { name: "Database Design and Development Part 2" }, 
+                            { name: "Programming" }, 
+                            { name: "Professional Practice" }
+                        ]
+                    },
+                    { 
+                        name: "SEMESTER 2", 
+                        status: "Upcoming",
+                        progress: 0,
+                        modules: [
+                            { name: "Planning A Computing Project (Pearson Set)" }, 
+                            { name: "Web Design and Development" }, 
+                            { name: "Software Development Lifecycles" }, 
+                            { name: "Security" }
+                        ]
+                    },
+                    { 
+                        name: "SEMESTER 3", 
+                        status: "Upcoming",
+                        progress: 0,
+                        modules: [
+                            { name: "User Experience and Interface Design" }, 
+                            { name: "Computing Research Project" }, 
+                            { name: "Business Process Support" }, 
+                            { name: "System Analysis and Design" }
+                        ]
+                    },
+                    { 
+                        name: "SEMESTER 4", 
+                        status: "Upcoming",
+                        progress: 0,
+                        modules: [
+                            { name: "Emerging Technology" }, 
+                            { name: "Computing Research Project" }, 
+                            { name: "IoT" }, 
+                            { name: "Prototyping" }
+                        ]
+                    }
+                ]
+            },
+            english: {
+                id: 'english',
+                title: "Diploma in English for Professionals",
+                duration: "Jan 2023 - Jun 2023",
+                progress: 100,
+                semesters: [
+                    { 
+                        name: "FINAL GRADE", 
+                        status: "Completed",
+                        progress: 100,
+                        modules: [
+                            { name: "Advanced Communication" },
+                            { name: "Business Writing" }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        const weeklyContent = [
+            { week: 1, topic: "Introduction & Core Architecture Setup", items: [{type: 'video', name: 'Lecture Recording Week 1'}, {type: 'slides', name: 'Introduction Slides'}] },
+            { week: 2, topic: "Deep Dive & Conceptual Frameworks", items: [{type: 'video', name: 'Technical Demo Week 2'}, {type: 'slides', name: 'Architecture Principles'}, {type: 'assignment', name: 'Module Assignment Part I'}] },
+            { week: 3, topic: "Practical Labs and Deployment", items: [{type: 'slides', name: 'System Deployment Guide'}, {type: 'assignment', name: 'Lab Submission Project Work'}] },
+        ];
+
+        let state = {
+            view: 'splash', // splash, login, mslogin, dashboard, course, module, courses-hub, calendar, payments, results
+            activeCourseId: null,
+            activeModule: null,
+            calendarDate: new Date(),
+            expandedSidebar: false,
+            notifications: [
+                { id: 1, type: 'grade', title: 'Assignment Graded', desc: 'Networking Tech - You scored A+', time: '2 hours ago', read: false },
+                { id: 2, type: 'payment', title: 'Payment Reminder', desc: 'Semester 2 installment due in 4 days.', time: '1 day ago', read: false },
+                { id: 3, type: 'announcement', title: 'System Maintenance', desc: 'LMS scheduled upgrade on Sunday 2 AM.', time: '3 days ago', read: true }
+            ],
+            student: {
+                name: 'Hasith Perera',
+                id: 'COL-STU-88219',
+                email: 'hasith.p@esoft.ac.lk',
+                phone: '+94 77 123 4567',
+                stream: 'Information Technology',
+                intake: '2024 October Intake',
+                avatarInitials: 'HP'
+            },
+            submissions: {
+                'Module Assignment Part I': { status: 'Not Submitted', file: null, date: null, progress: 0, uploading: false },
+                'Lab Submission Project Work': { status: 'Not Submitted', file: null, date: null, progress: 0, uploading: false }
+            },
+            activeSubmissionTarget: null, // Holds assignment name when modal is open
+            modals: {
+                notifications: false,
+                profile: false,
+                ai: false,
+                editProfile: false,
+                submission: false
+            },
+            aiChat: [
+                { sender: 'bot', text: 'Hi Hasith! 👋 I am your ESOFT Assistant. How can I help you today? You can ask me to summarize assignments, check due dates, or check tuition status.' }
+            ]
+        };
+
+        function toggleModal(modalName) {
+            Object.keys(state.modals).forEach(k => {
+                if(k !== modalName) state.modals[k] = false;
+            });
+            state.modals[modalName] = !state.modals[modalName];
+            render();
+        }
+
+        function closeAllModals() {
+            state.modals = { notifications: false, profile: false, ai: false, editProfile: false, submission: false };
+            render();
+        }
+
+        function navigate(view, params = {}) {
+            closeAllModals();
+            const app = document.getElementById('app');
+            app.classList.remove('animate-fade-in');
+            void app.offsetWidth; // Trigger reflow layout rendering
+            app.classList.add('animate-fade-in');
+            
+            state.view = view;
+            if(params.courseId) state.activeCourseId = params.courseId;
+            if(params.module) state.activeModule = params.module;
+            
+            render();
+        }
+
+        function updateProfile(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            state.student.name = formData.get('studentName');
+            state.student.phone = formData.get('studentPhone');
+            state.student.email = formData.get('studentEmail');
+            
+            // Set initials
+            const initials = state.student.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            state.student.avatarInitials = initials;
+            
+            state.modals.editProfile = false;
+            render();
+        }
+
+        function markAllNotificationsRead() {
+            state.notifications.forEach(n => n.read = true);
+            render();
+        }
+
+        function handleSendChatMessage() {
+            const input = document.getElementById('ai-chat-input');
+            const val = input.value.trim();
+            if(!val) return;
+
+            state.aiChat.push({ sender: 'user', text: val });
+            input.value = '';
+            render();
+
+            // Auto simulated smart response matching keywords
+            setTimeout(() => {
+                let reply = "I'm processing your query with our study guides. For specific subject matter, please review Chapter slides inside your active course module space.";
+                const lower = val.toLowerCase();
+                if(lower.includes('python') || lower.includes('assignment')) {
+                    reply = "You have an assignment for Python stage 3 coming up. The submission link is now open under Stage 3 modules!";
+                } else if(lower.includes('fee') || lower.includes('payment') || lower.includes('lkr')) {
+                    reply = "Your next installment of LKR 25,000 is due on October 25th. You can pay directly from the Financials dashboard.";
+                } else if(lower.includes('exam') || lower.includes('result')) {
+                    reply = "Your results are ready for Level 3. Your cumulative GPA is currently 3.8! Exceptional work!";
+                }
+                state.aiChat.push({ sender: 'bot', text: reply });
+                render();
+                // Scroll chat container to bottom
+                const chatContainer = document.getElementById('chat-msg-container');
+                if(chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1000);
+        }
+
+        function triggerSubmissionModal(assignmentName) {
+            state.activeSubmissionTarget = assignmentName;
+            if(!state.submissions[assignmentName]) {
+                state.submissions[assignmentName] = { status: 'Not Submitted', file: null, date: null, progress: 0, uploading: false };
+            }
+            state.modals.submission = true;
+            render();
+        }
+
+        function simulateFileUpload() {
+            const fileInput = document.getElementById('portal-file-picker');
+            if(!fileInput || !fileInput.files.length) return;
+            
+            const file = fileInput.files[0];
+            const target = state.activeSubmissionTarget;
+            
+            // Plagiarism declaration checkbox validator
+            const declaration = document.getElementById('declaration-check');
+            if(declaration && !declaration.checked) {
+                alert("Please agree to the Academic Honesty Declaration before uploading.");
+                return;
+            }
+
+            state.submissions[target].uploading = true;
+            state.submissions[target].progress = 10;
+            render();
+
+            // Smooth uploading progress intervals
+            const interval = setInterval(() => {
+                if(state.submissions[target].progress < 90) {
+                    state.submissions[target].progress += 20;
+                    render();
+                } else {
+                    clearInterval(interval);
+                    state.submissions[target].progress = 100;
+                    state.submissions[target].uploading = false;
+                    state.submissions[target].status = 'Submitted';
+                    state.submissions[target].file = file.name;
+                    state.submissions[target].date = new Date().toLocaleString();
+                    render();
+                }
+            }, 300);
+        }
+
+        function deleteSubmission(assignmentName) {
+            if(confirm("Are you sure you want to delete this submission? This will revoke your turned-in assessment.")) {
+                state.submissions[assignmentName] = { status: 'Not Submitted', file: null, date: null, progress: 0, uploading: false };
+                render();
+            }
+        }
+
+        function changeCalendarMonth(delta) {
+            state.calendarDate.setMonth(state.calendarDate.getMonth() + delta);
+            render();
+        }
+
+        function render() {
+            const app = document.getElementById('app');
+            
+            switch(state.view) {
+                case 'splash': app.innerHTML = renderSplash(); break;
+                case 'login': app.innerHTML = renderLogin(); break;
+                case 'mslogin': app.innerHTML = renderMsLogin(); break;
+                case 'dashboard': app.innerHTML = renderLayout(renderDashboardMain()); break;
+                case 'course': app.innerHTML = renderLayout(renderCourseDetail()); break;
+                case 'module': app.innerHTML = renderLayout(renderModuleDetail()); break;
+                case 'courses-hub': app.innerHTML = renderLayout(renderAllCourses()); break;
+                case 'calendar': app.innerHTML = renderLayout(renderCalendarView()); break;
+                case 'payments': app.innerHTML = renderLayout(renderPaymentsView()); break;
+                case 'results': app.innerHTML = renderLayout(renderResultsView()); break;
+            }
+            
+            setTimeout(() => { if(window.lucide) lucide.createIcons(); }, 50);
+        }
+
+        function renderSplash() {
+            setTimeout(() => navigate('login'), 2200);
+            return `
+                <div class="h-screen w-full flex flex-col items-center justify-center bg-white">
+                    <div class="animate-slide-up flex flex-col items-center">
+                        <img src="esoft-logo.png" alt="ESOFT Logo" class="h-28 md:h-36 mb-8 object-contain drop-shadow-xl" onerror="this.src='https://placehold.co/400x150/003399/white?text=ESOFT+METRO+CAMPUS'">
+                        <div class="w-48 h-1.5 bg-slate-100 rounded-full overflow-hidden mt-4">
+                            <div class="h-full bg-esoft-blue w-1/2 animate-[pulse_1s_ease-in-out_infinite] rounded-full" style="animation: slideRight 1.8s ease-in-out infinite alternate;"></div>
+                        </div>
+                        <p class="mt-6 text-slate-400 text-xs tracking-widest uppercase font-semibold">Student Portal Starting...</p>
+                    </div>
+                </div>
+                <style>@keyframes slideRight { from { transform: translateX(-100%); } to { transform: translateX(200%); } }</style>
+            `;
+        }
+
+        function renderLogin() {
+            return `
+                <div class="min-h-screen flex items-center justify-center p-4 relative">
+                    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+                    <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-esoft-red rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+
+                    <div class="w-full max-w-5xl flex rounded-3xl shadow-soft bg-white overflow-hidden animate-slide-up z-10">
+                        <div class="hidden md:flex flex-col justify-between w-1/2 bg-esoft-blue text-white p-12 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
+                            <div class="relative z-10">
+                                <img src="esoft-logo.png" alt="ESOFT" class="h-12 bg-white p-2 rounded-xl mb-8" onerror="this.src='https://placehold.co/200x80/ffffff/003399?text=ESOFT'">
+                                <h1 class="text-4xl font-bold leading-tight mb-4">Empowering your<br>educational journey.</h1>
+                                <p class="text-blue-200 text-lg">Access your courses, track your progress, and stay connected with the campus.</p>
+                            </div>
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3">
+                                    <i data-lucide="shield-check" class="w-6 h-6 text-blue-300"></i>
+                                    <span class="text-sm text-blue-200">Secure University Gateway</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white">
+                            <div class="mb-8">
+                                <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Welcome back</h2>
+                                <p class="text-slate-500">Please enter your student credentials.</p>
+                            </div>
+                            
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-2">Student ID or Username</label>
+                                    <div class="relative">
+                                        <i data-lucide="user" class="absolute left-4 top-3.5 text-slate-400 w-5 h-5"></i>
+                                        <input id="user-id-input" type="text" value="COL-STU-88219" class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-esoft-blue outline-none transition-all font-medium">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+                                    <div class="relative">
+                                        <i data-lucide="lock" class="absolute left-4 top-3.5 text-slate-400 w-5 h-5"></i>
+                                        <input type="password" value="********" class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-esoft-blue outline-none transition-all font-medium">
+                                    </div>
+                                </div>
+                                <button onclick="navigate('mslogin')" class="w-full bg-esoft-blue hover:bg-blue-800 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-0.5 mt-4">
+                                    Sign In
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMsLogin() {
+            return `
+                <div class="min-h-screen flex items-center justify-center p-4">
+                    <div class="w-full max-w-md bg-white p-10 rounded-3xl shadow-soft text-center animate-slide-up border border-slate-100">
+                        <img src="images.jpg" alt="ESU Logo" class="h-20 mx-auto mb-6 rounded-2xl shadow-sm" onerror="this.src='https://placehold.co/100x100/e31837/white?text=ESU'">
+                        <h2 class="text-2xl font-bold mb-3 text-slate-800">Academic Account</h2>
+                        <p class="text-slate-500 mb-8 text-sm">To access course materials, please verify your Office 365 Academic identity.</p>
+                        
+                        <button onclick="navigate('dashboard')" class="w-full border-2 border-slate-200 hover:border-blue-500 bg-white p-4 rounded-2xl flex items-center justify-center gap-3 transition-all hover:shadow-md group">
+                            <svg class="w-6 h-6" viewBox="0 0 23 23"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>
+                            <span class="font-bold text-slate-700 group-hover:text-blue-600">Continue with Microsoft</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLayout(content) {
+            const unreadCount = state.notifications.filter(n => !n.read).length;
+
+            return `
+                <div class="flex h-screen overflow-hidden relative bg-slate-50">
+                    
+                    <!-- Sidebar Navigation -->
+                    <aside class="w-20 lg:w-64 bg-white border-r border-slate-200 flex flex-col justify-between transition-all duration-300 z-30 relative shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+                        <div>
+                            <div class="h-20 flex items-center justify-center lg:justify-start lg:px-6 border-b border-slate-100">
+                                <img src="esoft-logo.png" class="h-8 hidden lg:block" alt="Logo" onerror="this.src='https://placehold.co/100x30/003399/white?text=ESOFT'">
+                                <img src="images.jpg" class="h-10 w-10 rounded-lg lg:hidden" alt="Icon" onerror="this.src='https://placehold.co/40x40/003399/white?text=E'">
+                            </div>
+                            <nav class="p-4 space-y-2">
+                                ${renderNavItem('dashboard', 'layout-dashboard', 'Dashboard', state.view === 'dashboard')}
+                                ${renderNavItem('courses-hub', 'book-open', 'My Courses', ['course', 'module', 'courses-hub'].includes(state.view))}
+                                ${renderNavItem('calendar', 'calendar-days', 'Calendar', state.view === 'calendar')}
+                                ${renderNavItem('results', 'award', 'Academic Results', state.view === 'results')}
+                                ${renderNavItem('payments', 'credit-card', 'Financials', state.view === 'payments')}
+                            </nav>
+                        </div>
+                        <div class="p-4 border-t border-slate-100 bg-slate-50/50">
+                            <button onclick="navigate('login')" class="w-full flex items-center justify-center lg:justify-start gap-3 p-3 text-slate-500 hover:text-esoft-red hover:bg-red-50 rounded-xl transition-colors">
+                                <i data-lucide="log-out" class="w-5 h-5"></i>
+                                <span class="font-semibold hidden lg:block">Sign Out</span>
+                            </button>
+                        </div>
+                    </aside>
+
+                    <!-- Main Content Panel -->
+                    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+                        
+                        <!-- Top Header -->
+                        <header class="h-20 glass-panel border-b border-slate-200/50 flex items-center justify-between px-6 lg:px-10 z-20 sticky top-0 shadow-sm">
+                            <div class="flex items-center gap-4">
+                                <div class="hidden md:flex flex-col">
+                                    <span class="text-xs font-bold text-esoft-blue uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-full w-max">Academic Year 2026/2027</span>
+                                    <span class="text-sm font-semibold text-slate-500 mt-0.5">Semester Ongoing</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-4 lg:gap-6 relative">
+                                <!-- Notification Bell -->
+                                <div class="relative">
+                                    <button onclick="toggleModal('notifications')" class="relative p-2.5 bg-white text-slate-400 hover:text-esoft-blue rounded-full border border-slate-200 shadow-sm transition-all hover:shadow-md">
+                                        <i data-lucide="bell" class="w-5 h-5"></i>
+                                        ${unreadCount > 0 ? `<span class="absolute top-0 right-0 w-3 h-3 bg-esoft-red rounded-full border-2 border-white animate-pulse"></span>` : ''}
+                                    </button>
+                                    ${state.modals.notifications ? renderNotificationsModal() : ''}
+                                </div>
+                                
+                                <div class="h-8 w-px bg-slate-200 hidden sm:block"></div>
+                                
+                                <!-- User Profile -->
+                                <div class="relative">
+                                    <div onclick="toggleModal('profile')" class="flex items-center gap-3 cursor-pointer bg-white border border-transparent hover:border-slate-200 p-1.5 pr-4 rounded-full transition-all shadow-sm hover:shadow-md">
+                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-esoft-blue to-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-inner ring-2 ring-white">
+                                            ${state.student.avatarInitials}
+                                        </div>
+                                        <div class="text-left hidden sm:block">
+                                            <p class="text-sm font-bold text-slate-800 leading-tight">${state.student.name}</p>
+                                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Student</p>
+                                        </div>
+                                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 hidden sm:block"></i>
+                                    </div>
+                                    ${state.modals.profile ? renderProfileModal() : ''}
+                                </div>
+                            </div>
+                        </header>
+
+                        <!-- Scrollable Content Area -->
+                        <div class="flex-1 overflow-y-auto flex flex-col scroll-smooth">
+                            <div class="p-6 lg:p-10 flex-1">
+                                ${content}
+                            </div>
+                            
+                            <!-- Custom Footer -->
+                            <footer class="mt-auto py-8 px-6 lg:px-10 border-t border-slate-200/60 bg-white/50 backdrop-blur-sm">
+                                <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm font-semibold text-slate-500">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-esoft-blue"><i data-lucide="shield" class="w-4 h-4"></i></div>
+                                        <p>&copy; ${new Date().getFullYear()} ESOFT Metro Campus. All Rights Reserved.</p>
+                                    </div>
+                                    <div class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-2xl border border-slate-200 shadow-sm transition-transform hover:scale-105">
+                                        <span>Designed by</span>
+                                        <span class="text-esoft-blue font-extrabold tracking-wide">Devindu Malshan</span>
+                                        <i data-lucide="sparkles" class="w-4 h-4 text-yellow-500 fill-yellow-500 animate-spin"></i>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                        
+                        <!-- Floating AI Assistant -->
+                        <div class="absolute bottom-8 right-8 z-50 flex flex-col items-end">
+                            ${state.modals.ai ? renderAIAssistant() : ''}
+                            <button onclick="toggleModal('ai')" class="w-16 h-16 bg-gradient-to-tr from-esoft-blue to-blue-500 rounded-full shadow-[0_10px_25px_rgba(0,51,153,0.4)] flex items-center justify-center text-white hover:scale-110 transition-transform mt-4 border-2 border-white relative group">
+                                <i data-lucide="${state.modals.ai ? 'x' : 'bot'}" class="w-8 h-8"></i>
+                                ${!state.modals.ai ? '<span class="absolute -top-2 -right-2 bg-esoft-red text-white text-[10px] font-bold px-2 py-1 rounded-full border-2 border-white animate-bounce">Ask AI</span>' : ''}
+                            </button>
+                        </div>
+                    </main>
+                </div>
+                
+                <!-- Full overlays for custom modular processes -->
+                ${state.modals.editProfile ? renderEditProfileModal() : ''}
+                ${state.modals.submission ? renderSubmissionModal() : ''}
+                ${Object.values(state.modals).some(v => v) ? `<div onclick="closeAllModals()" class="fixed inset-0 z-10 bg-slate-900/10 backdrop-blur-[1px]"></div>` : ''}
+            `;
+        }
+
+        function renderNavItem(id, icon, label, isActive) {
+            const activeClass = isActive ? 'bg-esoft-blue text-white shadow-lg shadow-blue-900/20' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900';
+            return `
+                <a href="#" onclick="navigate('${id}')" class="flex items-center justify-center lg:justify-start gap-3 p-3.5 rounded-xl transition-all ${activeClass} group relative">
+                    <i data-lucide="${icon}" class="w-5 h-5 ${isActive ? 'text-white' : 'group-hover:scale-110 transition-transform'}"></i>
+                    <span class="font-bold hidden lg:block tracking-wide">${label}</span>
+                </a>
+            `;
+        }
+
+        function renderEditProfileModal() {
+            return `
+                <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeAllModals()"></div>
+                    <div class="bg-white rounded-3xl shadow-glass border border-slate-100 p-8 w-full max-w-lg z-50 animate-pop relative">
+                        <button onclick="closeAllModals()" class="absolute top-6 right-6 p-2 bg-slate-100 rounded-full text-slate-400 hover:text-slate-700">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                        <h3 class="font-extrabold text-2xl text-slate-800 mb-6">Modify Personal Profile</h3>
+                        
+                        <form onsubmit="updateProfile(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">Full Name</label>
+                                <input type="text" name="studentName" value="${state.student.name}" required class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-esoft-blue outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">Email Address</label>
+                                <input type="email" name="studentEmail" value="${state.student.email}" required class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-esoft-blue outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">Phone Number</label>
+                                <input type="text" name="studentPhone" value="${state.student.phone}" required class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-esoft-blue outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">Current Intake Path</label>
+                                <input type="text" disabled value="${state.student.intake}" class="w-full p-3 bg-slate-100 border border-slate-200 rounded-xl text-slate-500 cursor-not-allowed">
+                            </div>
+                            
+                            <div class="pt-4 flex gap-3 justify-end">
+                                <button type="button" onclick="closeAllModals()" class="px-6 py-3 border border-slate-200 rounded-xl text-slate-600 font-bold hover:bg-slate-50">Cancel</button>
+                                <button type="submit" class="px-6 py-3 bg-esoft-blue text-white rounded-xl font-bold hover:bg-blue-800 shadow-md">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSubmissionModal() {
+            const assignment = state.activeSubmissionTarget;
+            const record = state.submissions[assignment] || { status: 'Not Submitted', file: null, date: null, progress: 0, uploading: false };
+
+            return `
+                <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeAllModals()"></div>
+                    <div class="bg-white rounded-[2rem] shadow-glass border border-slate-200 p-8 w-full max-w-2xl z-50 animate-pop relative overflow-hidden">
+                        
+                        <!-- Top header brand -->
+                        <div class="absolute top-0 left-0 w-full h-2.5 bg-gradient-to-r from-esoft-blue via-blue-500 to-esoft-red"></div>
+                        
+                        <button onclick="closeAllModals()" class="absolute top-8 right-8 p-2 bg-slate-100 rounded-full text-slate-400 hover:text-slate-700">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                        
+                        <div class="mb-6">
+                            <span class="bg-red-50 text-esoft-red text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-red-100">BTEC Turnitin Portal</span>
+                            <h3 class="font-extrabold text-2xl text-slate-800 mt-3 leading-tight">Assessment Submission Space</h3>
+                            <p class="text-sm font-semibold text-slate-500 mt-1">${assignment}</p>
+                        </div>
+
+                        ${record.status === 'Submitted' ? `
+                            <!-- Submission Complete view -->
+                            <div class="bg-green-50 border border-green-200 rounded-2xl p-6 text-center space-y-4 animate-fade-in">
+                                <div class="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto shadow-md">
+                                    <i data-lucide="check-circle" class="w-10 h-10"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-green-800 text-lg">Your Submission was Successful!</h4>
+                                    <p class="text-sm text-green-600 mt-1">Successfully securely saved to University repositories & Turnitin.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl border border-green-100 max-w-md mx-auto text-left text-xs font-medium space-y-2 text-slate-600">
+                                    <p><strong>File Name:</strong> ${record.file}</p>
+                                    <p><strong>Submitted Date:</strong> ${record.date}</p>
+                                    <p><strong>Status:</strong> Ready for Evaluator</p>
+                                    <p class="text-[10px] text-slate-400">Digital Receipt Reference: ${Math.floor(100000 + Math.random() * 900000)}</p>
+                                </div>
+                                <div class="flex gap-3 justify-center pt-2">
+                                    <button onclick="deleteSubmission('${assignment}')" class="px-5 py-2.5 bg-red-50 border border-red-200 text-esoft-red font-bold rounded-xl text-xs hover:bg-red-100 transition-all flex items-center gap-1">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i> Revoke Submission
+                                    </button>
+                                    <button onclick="closeAllModals()" class="px-5 py-2.5 bg-slate-800 text-white font-bold rounded-xl text-xs hover:bg-slate-900 transition-all">
+                                        Close Portal
+                                    </button>
+                                </div>
+                            </div>
+                        ` : `
+                            <!-- Active portal draft view -->
+                            <div class="space-y-6">
+                                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 grid grid-cols-2 gap-4 text-xs font-semibold text-slate-600">
+                                    <div><strong>Max File Size:</strong> 25 MB</div>
+                                    <div><strong>Allowed File Formats:</strong> .PDF, .ZIP, .DOCX</div>
+                                    <div><strong>Submission Due:</strong> 28 Oct 2026, 11:59 PM</div>
+                                    <div><strong>Turnitin Checker:</strong> Enabled</div>
+                                </div>
+
+                                <!-- Plagiarism Academic Honesty checklist -->
+                                <div class="p-4 bg-amber-50/50 border border-amber-200 rounded-2xl flex items-start gap-3">
+                                    <input type="checkbox" id="declaration-check" class="mt-1 w-4 h-4 accent-esoft-blue cursor-pointer">
+                                    <label for="declaration-check" class="text-xs font-semibold text-slate-600 leading-relaxed cursor-pointer select-none">
+                                        I certify that this submission is entirely my own original work and conforms to the Academic Integrity regulations of Pearson and ESOFT Metro Campus.
+                                    </label>
+                                </div>
+
+                                <!-- Drag-and-drop simulated frame -->
+                                <div class="border-2 border-dashed border-slate-200 hover:border-esoft-blue rounded-3xl p-8 text-center transition-all bg-slate-50 cursor-pointer relative group">
+                                    <input type="file" id="portal-file-picker" onchange="simulateFileUpload()" class="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                                    <div class="space-y-3">
+                                        <div class="w-16 h-16 bg-white shadow-sm border rounded-2xl flex items-center justify-center mx-auto text-slate-400 group-hover:text-esoft-blue transition-colors">
+                                            <i data-lucide="cloud-upload" class="w-8 h-8"></i>
+                                        </div>
+                                        <p class="text-sm font-bold text-slate-800">Drag & drop your files here, or <span class="text-esoft-blue hover:underline">browse files</span></p>
+                                        <p class="text-xs font-semibold text-slate-400">PDF documents with formatted report indices preferred.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Simulated progress indicators -->
+                                ${record.uploading ? `
+                                    <div class="space-y-2 animate-fade-in">
+                                        <div class="flex justify-between text-xs font-bold text-slate-600">
+                                            <span>Processing Turnitin and Metadata Scanning...</span>
+                                            <span>${record.progress}%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                                            <div class="bg-esoft-blue h-full rounded-full transition-all duration-300" style="width: ${record.progress}%"></div>
+                                        </div>
+                                    </div>
+                                ` : ''}
+
+                                <div class="flex justify-between items-center pt-4 border-t border-slate-100 text-xs font-bold text-slate-400">
+                                    <span>Support Helpdesk: ext 332</span>
+                                    <button onclick="closeAllModals()" class="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600">Cancel</button>
+                                </div>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderNotificationsModal() {
+            return `
+                <div class="absolute top-14 right-0 w-80 bg-white rounded-3xl shadow-glass border border-slate-100 p-4 z-50 animate-pop">
+                    <div class="flex justify-between items-center mb-4 px-2">
+                        <h3 class="font-bold text-slate-800 text-lg">Notifications</h3>
+                        <button onclick="markAllNotificationsRead()" class="text-esoft-blue text-xs font-bold hover:underline">Mark all read</button>
+                    </div>
+                    <div class="space-y-2 max-h-[300px] overflow-y-auto">
+                        ${state.notifications.map(n => `
+                            <div class="flex gap-4 p-3 ${n.read ? 'bg-white' : 'bg-blue-50/50 border border-blue-100'} hover:bg-blue-50 rounded-2xl cursor-pointer transition-colors">
+                                <div class="w-10 h-10 bg-white shadow-sm rounded-full flex items-center justify-center text-blue-600 shrink-0"><i data-lucide="bell" class="w-5 h-5"></i></div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800">${n.title}</p>
+                                    <p class="text-xs text-slate-500 mt-0.5">${n.desc}</p>
+                                    <p class="text-[10px] font-bold text-slate-400 mt-1 uppercase">${n.time}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProfileModal() {
+            return `
+                <div class="absolute top-16 right-0 w-72 bg-white rounded-3xl shadow-glass border border-slate-100 p-2 z-50 animate-pop">
+                    <div class="p-6 border-b border-slate-100 mb-2 flex flex-col items-center">
+                        <div class="relative group cursor-pointer mb-3">
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-esoft-blue to-blue-600 text-white flex items-center justify-center text-3xl font-black shadow-lg ring-4 ring-blue-50">${state.student.avatarInitials}</div>
+                        </div>
+                        <p class="font-extrabold text-lg text-slate-800">${state.student.name}</p>
+                        <p class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full mt-2">ID: ${state.student.id}</p>
+                    </div>
+                    <div class="p-2 space-y-1">
+                        <button onclick="toggleModal('editProfile')" class="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-2xl text-sm font-semibold text-slate-700 transition-colors group">
+                            <div class="flex items-center gap-3"><i data-lucide="user-cog" class="w-4 h-4 text-slate-400 group-hover:text-esoft-blue"></i> Edit Profile</div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300"></i>
+                        </button>
+                        <button onclick="navigate('login')" class="w-full flex items-center gap-3 p-3 hover:bg-red-50 text-red-600 rounded-2xl text-sm font-bold transition-colors mt-2">
+                            <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAIAssistant() {
+            return `
+                <div class="w-80 h-96 bg-white rounded-3xl shadow-glass border border-slate-200 flex flex-col overflow-hidden animate-pop origin-bottom-right mb-4">
+                    <div class="bg-gradient-to-r from-esoft-blue to-blue-600 p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white"><i data-lucide="bot" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="font-bold text-white leading-tight">ESOFT Study Buddy</h3>
+                            <p class="text-blue-100 text-[10px] uppercase tracking-widest font-bold">Smart LMS AI Agent</p>
+                        </div>
+                    </div>
+                    <div id="chat-msg-container" class="flex-1 bg-slate-50 p-4 overflow-y-auto flex flex-col gap-3">
+                        ${state.aiChat.map(msg => `
+                            <div class="${msg.sender === 'bot' ? 'bg-white text-slate-700 rounded-tl-sm border border-slate-100' : 'self-end bg-esoft-blue text-white rounded-tr-sm'} p-3 rounded-2xl shadow-sm text-sm w-[85%]">
+                                ${msg.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="p-3 bg-white border-t border-slate-100">
+                        <div class="relative">
+                            <input id="ai-chat-input" onkeydown="if(event.key === 'Enter') handleSendChatMessage()" type="text" placeholder="Ask a study question..." class="w-full bg-slate-100 rounded-full py-3 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 border border-transparent">
+                            <button onclick="handleSendChatMessage()" class="absolute right-1.5 top-1.5 w-8 h-8 bg-esoft-blue text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                                <i data-lucide="send" class="w-4 h-4 ml-0.5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDashboardMain() {
+            return `
+                <div class="max-w-7xl mx-auto space-y-8">
+                    
+                    <div class="bg-white rounded-3xl p-8 shadow-soft flex flex-col md:flex-row items-center justify-between border border-slate-100 animate-slide-up stagger-1 relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 w-96 h-96 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 z-0 transition-transform group-hover:scale-110 duration-700"></div>
+                        <div class="relative z-10 space-y-2 text-center md:text-left mb-6 md:mb-0">
+                            <h1 class="text-4xl font-black text-slate-800 tracking-tight">Welcome back, ${state.student.name.split(' ')[0]}! 🚀</h1>
+                            <p class="text-slate-500 text-lg font-medium">You have <span class="font-bold text-esoft-blue bg-blue-50 px-2 py-0.5 rounded-md">2 classes</span> scheduled and <span class="font-bold text-esoft-red bg-red-50 px-2 py-0.5 rounded-md">submissions open</span>.</p>
+                        </div>
+                        <button onclick="navigate('courses-hub')" class="relative z-10 bg-esoft-blue hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-blue-900/30 transition-all hover:-translate-y-1 flex items-center gap-3 text-lg">
+                            <i data-lucide="play-circle" class="w-6 h-6"></i> Enter Learning Hub
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 space-y-8 animate-slide-up stagger-2">
+                            <div class="flex justify-between items-end px-2">
+                                <h2 class="text-2xl font-extrabold text-slate-800">Currently Enrolled Program</h2>
+                                <button onclick="navigate('courses-hub')" class="text-sm font-bold text-esoft-blue hover:underline flex items-center gap-1">View All <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                            </div>
+                            
+                            <div class="grid sm:grid-cols-2 gap-6">
+                                ${Object.values(coursesData).map(course => renderCourseCard(course)).join('')}
+                            </div>
+                            
+                            <!-- BTEC and Pearson pathway section -->
+                            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 text-white shadow-xl flex justify-between items-center relative overflow-hidden group cursor-pointer border border-slate-700">
+                                <div class="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4 transition-transform duration-500 group-hover:scale-125 group-hover:-rotate-12">
+                                    <i data-lucide="compass" class="w-40 h-40"></i>
+                                </div>
+                                <div class="relative z-10">
+                                    <span class="bg-white/10 text-white/80 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3 inline-block border border-white/20">University Pathways</span>
+                                    <h3 class="text-2xl font-black mb-2">Explore Your Top-Up Degree</h3>
+                                    <p class="text-slate-300 text-sm max-w-sm font-medium leading-relaxed">Chart your next step: transfer Pearson credits directly to prestigious UK Partner Universities for BSc (Hons) Top-Ups.</p>
+                                </div>
+                                <a href="https://esoft.lk" target="_blank" class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center relative z-10 group-hover:bg-white group-hover:text-slate-900 transition-colors">
+                                    <i data-lucide="arrow-right" class="w-6 h-6"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="space-y-8 animate-slide-up stagger-3">
+                            <div class="bg-white rounded-3xl p-6 shadow-soft border border-slate-100 relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-2 h-full bg-gradient-to-b from-esoft-blue to-blue-300"></div>
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="font-extrabold text-xl text-slate-800">Upcoming Deadlines</h3>
+                                </div>
+                                <div class="space-y-4">
+                                    ${renderEventItem('28', 'Oct', 'Module Assignment Submission', '11:59 PM - Turnitin', 'red')}
+                                    ${renderEventItem('30', 'Oct', 'Practical Presentation Day', '9:00 AM - Lab B', 'purple')}
+                                    ${renderEventItem('02', 'Nov', 'Campus Tech Meetup', '1:00 PM - Auditoriums', 'green')}
+                                </div>
+                                <button onclick="navigate('calendar')" class="w-full mt-6 py-3.5 border-2 border-slate-100 hover:border-esoft-blue rounded-xl text-sm font-bold text-slate-600 hover:text-esoft-blue hover:bg-blue-50 transition-colors flex items-center justify-center gap-2">
+                                    <i data-lucide="calendar" class="w-4 h-4"></i> Open Academic Calendar
+                                </button>
+                            </div>
+
+                            <div class="bg-white rounded-3xl p-6 shadow-soft border border-slate-100">
+                                <h3 class="font-extrabold text-xl text-slate-800 mb-6">Tuition Fee Ledger</h3>
+                                <div class="bg-slate-50 border border-slate-200/60 p-5 rounded-2xl mb-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="w-10 h-10 bg-red-100 text-esoft-red rounded-xl flex items-center justify-center"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
+                                        <p class="text-xs font-black text-esoft-red bg-white px-2 py-1 rounded shadow-sm">Due 25th Oct</p>
+                                    </div>
+                                    <p class="text-sm font-bold text-slate-500 mb-1 mt-4">Next Payment Installment</p>
+                                    <p class="text-3xl font-black text-slate-800 tracking-tight">LKR 25,000</p>
+                                </div>
+                                <button onclick="navigate('payments')" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-4 rounded-2xl font-bold shadow-xl transition-transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                                    <i data-lucide="credit-card" class="w-5 h-5"></i> Open Financial Portal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCourseCard(course) {
+            return `
+                <div onclick="navigate('course', {courseId: '${course.id}'})" class="bg-white p-6 rounded-3xl shadow-soft border border-slate-100 hover:shadow-xl hover:-translate-y-1 hover:border-blue-200 transition-all cursor-pointer group flex flex-col h-full relative overflow-hidden">
+                    <div class="flex-1 relative z-10">
+                        <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-esoft-blue transition-colors duration-300">
+                            <i data-lucide="graduation-cap" class="w-7 h-7 text-esoft-blue group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <h3 class="font-extrabold text-xl text-slate-800 mb-3 leading-snug group-hover:text-esoft-blue transition-colors">${course.title}</h3>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-4 h-4"></i> ${course.duration}
+                        </p>
+                    </div>
+                    
+                    <div class="mt-auto relative z-10 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                        <div class="flex justify-between text-sm font-black mb-2">
+                            <span class="text-slate-600">Progression</span>
+                            <span class="text-esoft-blue">${course.progress}%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-esoft-blue to-blue-400 h-full rounded-full transition-all duration-1000 ease-out relative" style="width: ${course.progress}%">
+                                <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCourseDetail() {
+            const course = coursesData[state.activeCourseId];
+            if(!course) return `<p>Course not found</p>`;
+
+            return `
+                <div class="max-w-5xl mx-auto animate-fade-in">
+                    <div class="flex items-center gap-3 text-sm font-bold text-slate-400 mb-8">
+                        <button onclick="navigate('dashboard')" class="hover:text-esoft-blue transition-colors flex items-center gap-1 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200">
+                            <i data-lucide="home" class="w-4 h-4"></i> Dashboard
+                        </button>
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        <span class="text-slate-800 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 truncate max-w-[200px]">${course.title}</span>
+                    </div>
+
+                    <div class="bg-white rounded-[2rem] p-8 md:p-10 shadow-soft border border-slate-100 mb-10 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 z-0"></div>
+                        <div class="relative z-10 flex flex-col md:flex-row gap-10 justify-between items-center">
+                            <div class="flex-1">
+                                <span class="bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 inline-block">Active Program</span>
+                                <h1 class="text-4xl font-black text-slate-800 mb-4 leading-tight">${course.title}</h1>
+                                <p class="text-slate-500 flex items-center gap-2 font-bold bg-slate-50 w-max px-4 py-2 rounded-xl border border-slate-200">
+                                    <i data-lucide="calendar-days" class="w-5 h-5 text-esoft-blue"></i> ${course.duration}
+                                </p>
+                            </div>
+                            <div class="text-center bg-white p-8 rounded-[2rem] min-w-[240px] shadow-glass border border-slate-100">
+                                <p class="text-sm font-black text-slate-400 uppercase tracking-wider mb-2">Overall Progress</p>
+                                <p class="text-5xl font-black text-esoft-blue mb-4 drop-shadow-sm">${course.progress}%</p>
+                                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden shadow-inner">
+                                    <div class="bg-gradient-to-r from-esoft-blue to-blue-400 h-full rounded-full" style="width: ${course.progress}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                        <div class="p-2 bg-esoft-blue text-white rounded-lg"><i data-lucide="layers" class="w-5 h-5"></i></div>
+                        Course Curriculum
+                    </h2>
+                    <div class="space-y-6">
+                        ${course.semesters.map((sem, index) => renderSemesterAccordion(sem, index)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSemesterAccordion(sem, index) {
+            const isCompleted = sem.status === 'Completed';
+            const isOngoing = sem.status === 'Ongoing';
+            
+            let statusBadge = '';
+            if(isCompleted) statusBadge = `<span class="bg-green-100 text-green-700 text-[10px] uppercase tracking-wider px-3 py-1 rounded-full font-black border border-green-200 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Completed</span>`;
+            else if(isOngoing) statusBadge = `<span class="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider px-3 py-1 rounded-full font-black border border-blue-200 flex items-center gap-1 animate-pulse"><i data-lucide="loader-2" class="w-3 h-3"></i> Ongoing</span>`;
+            else statusBadge = `<span class="bg-slate-100 text-slate-500 text-[10px] uppercase tracking-wider px-3 py-1 rounded-full font-black border border-slate-200 flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Upcoming</span>`;
+
+            return `
+                <div class="bg-white rounded-[1.5rem] shadow-sm border ${isOngoing ? 'border-blue-300 ring-4 ring-blue-50' : 'border-slate-200'} overflow-hidden transition-all hover:shadow-md">
+                    <div class="p-6 md:p-8 flex items-center justify-between bg-gradient-to-r from-white to-slate-50 border-b border-slate-100">
+                        <div class="flex items-center gap-4">
+                            <h3 class="text-xl font-black text-slate-800">${sem.name}</h3>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="hidden sm:flex items-center gap-2 bg-white px-3 py-1 rounded-lg border border-slate-200">
+                                <i data-lucide="book-open" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-bold text-slate-500">${sem.modules.length} Modules</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50/30">
+                        ${sem.modules.map(mod => `
+                            <div onclick="navigate('module', {courseId: state.activeCourseId, module: '${mod.name}'})" class="p-5 rounded-2xl border border-slate-200 hover:border-esoft-blue hover:shadow-md cursor-pointer transition-all flex items-start gap-4 group bg-white relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="p-3 bg-slate-50 rounded-xl group-hover:bg-esoft-blue group-hover:shadow-lg transition-all duration-300 relative z-10">
+                                    <i data-lucide="folder" class="w-6 h-6 text-slate-400 group-hover:text-white transition-colors"></i>
+                                </div>
+                                <div class="relative z-10">
+                                    <h4 class="font-extrabold text-slate-800 group-hover:text-esoft-blue transition-colors leading-tight text-lg">${mod.name}</h4>
+                                    <p class="text-xs font-bold text-slate-400 mt-2 flex items-center gap-1 group-hover:text-slate-500">View materials <i data-lucide="arrow-right" class="w-3 h-3"></i></p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderModuleDetail() {
+            const moduleName = state.activeModule;
+            return `
+                <div class="max-w-4xl mx-auto animate-slide-up animate-fade-in">
+                    <div class="flex items-center gap-3 text-sm font-bold text-slate-400 mb-8 overflow-x-auto whitespace-nowrap pb-2">
+                        <button onclick="navigate('dashboard')" class="hover:text-esoft-blue transition-colors flex items-center gap-1 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 shrink-0">
+                            <i data-lucide="home" class="w-4 h-4"></i> Dashboard
+                        </button>
+                        <i data-lucide="chevron-right" class="w-4 h-4 shrink-0"></i>
+                        <button onclick="navigate('course', {courseId: state.activeCourseId})" class="hover:text-esoft-blue transition-colors bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 shrink-0">
+                            Course Detail
+                        </button>
+                        <i data-lucide="chevron-right" class="w-4 h-4 shrink-0"></i>
+                        <span class="text-slate-800 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 truncate shrink-0">${moduleName}</span>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-slate-900 to-esoft-blue rounded-[2rem] p-8 md:p-12 text-white shadow-2xl mb-10 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>
+                        <div class="relative z-10">
+                            <span class="bg-white/20 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-6 inline-block backdrop-blur-md border border-white/30">Module Space</span>
+                            <h1 class="text-3xl md:text-5xl font-black mb-6 leading-tight">${moduleName}</h1>
+                            <div class="flex flex-wrap gap-4 mt-6">
+                                <div class="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-xl font-bold border border-white/10">
+                                    <i data-lucide="clock" class="w-5 h-5 text-blue-300"></i> 12 Weeks Duration
+                                </div>
+                                <div class="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-xl font-bold border border-white/10">
+                                    <i data-lucide="file-text" class="w-5 h-5 text-blue-300"></i> Turnitin Enabled
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-black text-slate-800 flex items-center gap-3">
+                                <div class="p-2 bg-white shadow-sm border border-slate-200 rounded-lg"><i data-lucide="calendar" class="w-5 h-5 text-esoft-blue"></i></div>
+                                Weekly Plan & Submissions
+                            </h2>
+                        </div>
+                        ${weeklyContent.map(week => `
+                            <div class="bg-white rounded-[1.5rem] shadow-sm border border-slate-200 p-6 md:p-8 hover:shadow-md transition-shadow">
+                                <div class="flex flex-col md:flex-row md:items-center gap-6 mb-6 pb-6 border-b border-slate-100">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex flex-col items-center justify-center font-black text-slate-600 shadow-inner border border-white">
+                                        <span class="text-[10px] uppercase tracking-widest">Week</span>
+                                        <span class="text-2xl leading-none">${week.week}</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-extrabold text-slate-800 mb-1">${week.topic}</h3>
+                                        <p class="text-sm font-semibold text-slate-500">Core concepts, lectures, and resources</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 gap-3">
+                                    ${week.items.map(item => {
+                                        let icon = 'file'; let color = 'text-slate-500'; let bg = 'bg-slate-100'; let bColor = 'border-slate-200';
+                                        let actionButton = '';
+                                        
+                                        if(item.type === 'video') { 
+                                            icon = 'play-circle'; color = 'text-blue-600'; bg='bg-blue-50'; bColor='border-blue-100'; 
+                                            actionButton = `<button class="w-10 h-10 bg-slate-50 hover:bg-esoft-blue hover:text-white text-slate-400 rounded-full flex items-center justify-center transition-colors"><i data-lucide="external-link" class="w-5 h-5"></i></button>`;
+                                        }
+                                        if(item.type === 'slides') { 
+                                            icon = 'presentation'; color = 'text-orange-600'; bg='bg-orange-50'; bColor='border-orange-100'; 
+                                            actionButton = `<button class="w-10 h-10 bg-slate-50 hover:bg-esoft-blue hover:text-white text-slate-400 rounded-full flex items-center justify-center transition-colors"><i data-lucide="download" class="w-5 h-5"></i></button>`;
+                                        }
+                                        if(item.type === 'assignment') { 
+                                            icon = 'upload-cloud'; color = 'text-esoft-red'; bg='bg-red-50'; bColor='border-red-200'; 
+                                            const subState = state.submissions[item.name] || { status: 'Not Submitted' };
+                                            const btnText = subState.status === 'Submitted' ? 'Turned In' : 'Submit File';
+                                            const btnColor = subState.status === 'Submitted' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-esoft-red text-white hover:bg-red-700';
+                                            actionButton = `<button onclick="triggerSubmissionModal('${item.name}')" class="px-4 py-2 ${btnColor} rounded-xl text-xs font-bold shadow-sm transition-all">${btnText}</button>`;
+                                        }
+                                        
+                                        return `
+                                        <div class="flex items-center justify-between p-4 bg-white border ${bColor} hover:shadow-md rounded-2xl transition-all">
+                                            <div class="flex items-center gap-4">
+                                                <div class="p-3 ${bg} rounded-xl"><i data-lucide="${icon}" class="w-6 h-6 ${color}"></i></div>
+                                                <div>
+                                                    <span class="font-extrabold text-slate-700 text-base block">${item.name}</span>
+                                                    ${item.type === 'assignment' ? `<span class="text-[10px] uppercase font-bold text-slate-400 block mt-0.5">Status: ${state.submissions[item.name]?.status || 'Not Submitted'}</span>` : ''}
+                                                </div>
+                                            </div>
+                                            ${actionButton}
+                                        </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAllCourses() {
+            return `
+                <div class="max-w-7xl mx-auto animate-slide-up space-y-8 animate-fade-in">
+                    <div class="flex justify-between items-end bg-white p-8 rounded-[2rem] shadow-soft border border-slate-100">
+                        <div>
+                            <h1 class="text-3xl font-black text-slate-800 mb-2">My Learning Hub</h1>
+                            <p class="text-slate-500 font-medium">Access your registered pathways and upcoming stages.</p>
+                        </div>
+                        <div class="hidden md:flex gap-2 bg-slate-100 p-1 rounded-xl">
+                            <button class="bg-white shadow-sm px-4 py-2 rounded-lg text-sm font-bold text-slate-800">Enrolled Programs</button>
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        ${Object.values(coursesData).map(course => renderCourseCard(course)).join('')}
+                        
+                        <a href="https://esoft.lk" target="_blank" class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-[2rem] p-8 flex flex-col items-center justify-center text-center hover:bg-blue-50 hover:border-blue-300 transition-all cursor-pointer group">
+                            <div class="w-16 h-16 bg-white shadow-sm rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="plus" class="w-8 h-8 text-slate-400 group-hover:text-esoft-blue"></i>
+                            </div>
+                            <h3 class="font-extrabold text-xl text-slate-700 mb-2 group-hover:text-esoft-blue">Enroll in New Pathway</h3>
+                            <p class="text-sm font-medium text-slate-500">Explore UK BSc Top-Up pathways & registrations.</p>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCalendarView() {
+            const date = state.calendarDate;
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDayIndex = new Date(year, month, 1).getDay(); // 0-6
+            
+            let daysHtml = '';
+            // Empty slots for start of month
+            for(let i=0; i<firstDayIndex; i++) daysHtml += `<div class="aspect-square bg-slate-50/50 rounded-2xl"></div>`;
+            
+            for(let i=1; i<=daysInMonth; i++) {
+                let classes = "bg-white border-slate-100 text-slate-700 hover:border-esoft-blue hover:shadow-md cursor-pointer transition-all";
+                let badge = '';
+                
+                // Demo logic for specific days
+                if(i === 28 && month === 6) { classes = "bg-red-50 border-red-200 text-red-700 ring-2 ring-red-500/20"; badge = `<div class="mt-2 text-[10px] bg-red-500 text-white px-2 py-0.5 rounded font-bold w-full truncate text-center">Submission</div>`; }
+                else if(i === 2) { classes = "bg-green-50 border-green-200 text-green-700 ring-2 ring-green-500/20"; badge = `<div class="mt-2 text-[10px] bg-green-500 text-white px-2 py-0.5 rounded font-bold w-full truncate text-center">Tech Meetup</div>`; }
+                
+                daysHtml += `
+                    <div class="aspect-square flex flex-col items-center justify-between p-2 rounded-2xl border ${classes} relative font-black text-sm md:text-lg">
+                        <span class="self-start">${i}</span>
+                        ${badge}
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="max-w-7xl mx-auto animate-slide-up space-y-6 animate-fade-in">
+                    <div class="flex justify-between items-center bg-white p-6 md:p-8 rounded-[2rem] shadow-soft border border-slate-100">
+                        <div>
+                            <h1 class="text-3xl font-black text-slate-800">Master Academic Calendar</h1>
+                            <p class="text-slate-500 font-medium mt-1">${date.toLocaleString('default', { month: 'long', year: 'numeric' })}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="changeCalendarMonth(-1)" class="p-3 bg-slate-100 hover:bg-slate-200 rounded-xl"><i data-lucide="chevron-left"></i></button>
+                            <button onclick="changeCalendarMonth(1)" class="p-3 bg-slate-100 hover:bg-slate-200 rounded-xl"><i data-lucide="chevron-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        <div class="lg:col-span-3 bg-white p-6 md:p-8 rounded-[2rem] shadow-soft border border-slate-100">
+                            <div class="grid grid-cols-7 gap-4 mb-4 text-center font-black text-slate-400 text-xs uppercase tracking-widest">
+                                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                            </div>
+                            <div class="grid grid-cols-7 gap-3 text-center">
+                                ${daysHtml}
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-soft border border-slate-100">
+                                <h3 class="font-extrabold text-xl mb-6 text-slate-800 border-b border-slate-100 pb-4">Schedule Colors</h3>
+                                <div class="space-y-4 text-sm font-bold text-slate-600">
+                                    <div class="flex items-center gap-3 p-3 bg-red-50 rounded-xl"><div class="w-3 h-3 rounded-full bg-red-500"></div> Turnitin Submissions</div>
+                                    <div class="flex items-center gap-3 p-3 bg-green-50 rounded-xl"><div class="w-3 h-3 rounded-full bg-green-500"></div> Campus Tech Events</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPaymentsView() {
+            return `
+                <div class="max-w-5xl mx-auto animate-slide-up space-y-8 animate-fade-in">
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2rem] p-8 md:p-10 shadow-xl text-white flex justify-between items-center relative overflow-hidden">
+                        <i data-lucide="credit-card" class="absolute -right-10 -bottom-10 w-64 h-64 text-white/5 rotate-12"></i>
+                        <div class="relative z-10">
+                            <h1 class="text-3xl font-black mb-2">Financial Ledger</h1>
+                            <p class="text-slate-400 font-medium">Manage your tuition schedules, receipts & history.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-8 rounded-[2rem] shadow-soft border border-slate-100 border-l-4 border-l-esoft-red">
+                            <h3 class="font-bold text-slate-500 mb-1">Due Tuition Fee</h3>
+                            <div class="flex items-end gap-4 mb-6">
+                                <p class="text-4xl font-black text-slate-800">LKR 25,000</p>
+                                <span class="bg-red-100 text-esoft-red text-xs font-bold px-3 py-1 rounded-full mb-1">Due Oct 25</span>
+                            </div>
+                            <button onclick="alert('Proceeding to secured ESOFT IPG Gateway...')" class="w-full bg-esoft-blue hover:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-lg transition-colors flex justify-center items-center gap-2">
+                                Pay Online securely <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2rem] shadow-soft border border-slate-100 border-l-4 border-l-green-500">
+                            <h3 class="font-bold text-slate-500 mb-1">Total Paid This Stage</h3>
+                            <p class="text-4xl font-black text-slate-800 mb-6">LKR 150,000</p>
+                            <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                                <div class="bg-green-500 h-full w-[85%]"></div>
+                            </div>
+                            <p class="text-xs font-bold text-slate-400 mt-3 text-right">85% of stage fees complete</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-[2rem] shadow-soft border border-slate-100 overflow-hidden">
+                        <div class="p-6 md:p-8 border-b border-slate-100">
+                            <h2 class="text-xl font-black text-slate-800">Payment Transactions</h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500 font-bold border-b border-slate-200">
+                                        <th class="p-4 pl-8">Payment Date</th>
+                                        <th class="p-4">Description</th>
+                                        <th class="p-4">Payment Code</th>
+                                        <th class="p-4 text-right pr-8">Receipt Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm font-semibold text-slate-700 divide-y divide-slate-100">
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="p-4 pl-8">15 Sep 2026</td>
+                                        <td>Stage 3 Semester Installment 2</td>
+                                        <td class="text-slate-400 font-mono">TRX-88219-03</td>
+                                        <td class="p-4 text-right pr-8 font-black">LKR 25,000</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="p-4 pl-8">10 Aug 2026</td>
+                                        <td>Stage 3 Semester Installment 1</td>
+                                        <td class="text-slate-400 font-mono">TRX-88219-02</td>
+                                        <td class="p-4 text-right pr-8 font-black">LKR 25,000</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="p-4 pl-8">01 Jul 2026</td>
+                                        <td>BTEC Stage Registration Fee</td>
+                                        <td class="text-slate-400 font-mono">TRX-88219-01</td>
+                                        <td class="p-4 text-right pr-8 font-black">LKR 100,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderResultsView() {
+            return `
+                <div class="max-w-5xl mx-auto animate-slide-up space-y-8 animate-fade-in">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-[2rem] p-8 md:p-10 shadow-xl text-white flex flex-col md:flex-row justify-between items-center relative overflow-hidden">
+                        <i data-lucide="award" class="absolute -right-5 -bottom-5 w-48 h-48 text-white/10"></i>
+                        <div class="relative z-10 mb-6 md:mb-0">
+                            <h1 class="text-3xl font-black mb-2">Grading Summary</h1>
+                            <p class="text-blue-200 font-medium">Verify official academic evaluations & transcript history.</p>
+                        </div>
+                        <div class="relative z-10 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 text-center min-w-[200px]">
+                            <p class="text-sm font-bold text-blue-200 uppercase tracking-wider mb-1">Cumulative GPA</p>
+                            <p class="text-5xl font-black drop-shadow-md">3.8</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-[2rem] shadow-soft border border-slate-100 overflow-hidden">
+                        <div class="bg-slate-50 p-6 md:p-8 border-b border-slate-100 flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-black text-slate-800">IT Stage 1 & 2 transcript</h2>
+                                <p class="text-sm font-bold text-slate-500 mt-1">Verified evaluations</p>
+                            </div>
+                            <span class="bg-green-100 text-green-700 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full"><i data-lucide="check" class="w-3 h-3 inline"></i> Overall Pass</span>
+                        </div>
+                        <div class="p-6 md:p-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex justify-between items-center p-4 border border-slate-200 rounded-xl hover:shadow-md transition-shadow">
+                                    <span class="font-extrabold text-slate-700">IT Concepts</span>
+                                    <span class="w-10 h-10 bg-blue-50 text-esoft-blue rounded-lg flex items-center justify-center font-black text-lg">A+</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 border border-slate-200 rounded-xl hover:shadow-md transition-shadow">
+                                    <span class="font-extrabold text-slate-700">MS Office Productivity</span>
+                                    <span class="w-10 h-10 bg-blue-50 text-esoft-blue rounded-lg flex items-center justify-center font-black text-lg">A</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 border border-slate-200 rounded-xl hover:shadow-md transition-shadow">
+                                    <span class="font-extrabold text-slate-700">Computer Hardware</span>
+                                    <span class="w-10 h-10 bg-blue-50 text-esoft-blue rounded-lg flex items-center justify-center font-black text-lg">A-</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 border border-slate-200 rounded-xl hover:shadow-md transition-shadow">
+                                    <span class="font-extrabold text-slate-700">Network Technology</span>
+                                    <span class="w-10 h-10 bg-green-50 text-green-600 rounded-lg flex items-center justify-center font-black text-lg">B+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEventItem(day, month, title, time, colorType) {
+            const colors = {
+                blue: 'bg-blue-50 text-blue-600 border-blue-200 shadow-blue-100',
+                red: 'bg-red-50 text-red-600 border-red-200 shadow-red-100',
+                green: 'bg-green-50 text-green-600 border-green-200 shadow-green-100',
+                purple: 'bg-purple-50 text-purple-600 border-purple-200 shadow-purple-100'
+            };
+            const c = colors[colorType] || colors.blue;
+            
+            return `
+                <div class="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors cursor-pointer group border border-transparent hover:border-slate-200">
+                    <div class="flex flex-col items-center justify-center w-14 h-14 rounded-2xl border bg-white ${c.split(' ')[1]} ${c.split(' ')[2]} font-black shadow-sm group-hover:scale-105 transition-transform">
+                        <span class="text-[10px] uppercase tracking-wider mb-0.5">${month}</span>
+                        <span class="text-xl leading-none">${day}</span>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-800 group-hover:text-esoft-blue transition-colors text-sm">${title}</h4>
+                        <p class="text-[11px] text-slate-500 font-semibold flex items-center gap-1 mt-0.5"><i data-lucide="clock" class="w-3 h-3"></i> ${time}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.onload = () => {
+            render();
+        };
+    </script>
+</body>
+</html>
